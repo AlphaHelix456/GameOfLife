@@ -6,7 +6,7 @@ Created on Nov 22, 2017
 
 # Executable
 
-from tkinter import Tk, Frame, TOP, BOTTOM
+from tkinter import Tk, Frame, TOP, BOTTOM, LEFT, BOTH
 
 import controller
 
@@ -18,11 +18,11 @@ root.protocol('WM_DELETE_WINDOW', quit)
 # Place buttons at the top of the window
 frame = Frame(root)
 frame.pack(side=TOP)
-controller.start_button(frame, text = 'START')
-controller.stop_button(frame, text = 'STOP')
-controller.reset_button(frame, text = 'RESET')
-controller.generation_label(frame, text = 'GENERATION: 0')
-controller.grid_simulation_canvas(root, 1000, 1000).pack(side = BOTTOM, expand = True)
+controller.start_button(frame, text = 'START').pack(side = LEFT)
+controller.stop_button(frame, text = 'STOP').pack(side = LEFT)
+controller.reset_button(frame, text = 'RESET').pack(side = LEFT)
+controller.generation_label(frame, text = 'GENERATION: 0').pack(side = LEFT)
+controller.grid_simulation_canvas(root, width = 1000, height = 1000).pack(side = BOTTOM, fill = BOTH, expand = True)
 
 if __name__ == '__main__':
     controller.repeater(root)

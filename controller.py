@@ -27,7 +27,7 @@ def generation_label(parent, **config) -> Label:
 def grid_simulation_canvas(parent, **config) -> Canvas:
     global canvas
     canvas = Canvas(parent, **config)
-    canvas.bind('<ButtonRelease>', model.mouse_click)
+    canvas.bind('<Button-1>', model.mouse_click)
     return canvas
 
 # The repeater calls itself every 1000 milliseconds

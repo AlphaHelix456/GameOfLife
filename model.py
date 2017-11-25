@@ -13,12 +13,7 @@ generation_count = 0
 GRID_WIDTH = 30
 GRID_HEIGHT = 30
 grid = logic.Grid(GRID_HEIGHT, GRID_WIDTH)
-
-def mouse_click(event: Event):
-    click_point_x, click_point_y = event.x, event.y
-    grid.handle_mouse_click(click_point_x, click_point_y)
     
-
 def update_grid():
     global generation_count
     if running:
@@ -32,6 +27,9 @@ def display_grid():
     
     controller.generation.config(text = 'GENERATION: ' + str(generation_count))
 
+def mouse_click(event: Event):
+    grid.handle_mouse_click(event.x, event.y, controller.canvas)
+
 def start():
     global running
     running = True
@@ -39,10 +37,12 @@ def start():
 def stop():
     global running
     running = False
+
     
 def reset():
     global running, generation_count, grid
     running = False
     generation_count = 0
     grid = logic.Grid(GRID_WIDTH, GRID_HEIGHT)
+    
     

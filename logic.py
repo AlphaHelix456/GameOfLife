@@ -49,7 +49,7 @@ class Grid:
                 cell_neighbors = get_neighbors(self._cells, cell.get_location())
                 state_sublist.append(advance_state(cell, cell_neighbors))
             new_states.append(state_sublist)
-        self._cells = update_cell_states(self._cells, new_states) 
+        self._cells = update_cell_states(new_states, self._cells) 
     
     def display(self, canvas):
         canvas_width = canvas.winfo_width()
@@ -60,15 +60,15 @@ class Grid:
         
         for row in range(len(self._cells)):
             for col in range(len(self._cells[row])):
-                topleft_x, topleft_y = (cell_width*row) * canvas_width, (cell_height*col) * canvas_height
-                bottomright_x, bottomright_y = (cell_width*(row+1)) * canvas_width, (cell_height*(col + 1)) * canvas_height
+                topleft_x, topleft_y = (cell_width * row), (cell_height * col)
+                bottomright_x, bottomright_y = (cell_width * (row+1)), (cell_height * (col+1))
                 
                 if self._cells[row][col].is_populated():
                     canvas.create_rectangle(topleft_x, topleft_y, bottomright_x, bottomright_y,
-                                            fill = '#696969', outline = '#d3d3d3')
+                                            fill = '#ccff00', outline = '#d3d3d3')
                 else:
                     canvas.create_rectangle(topleft_x, topleft_y, bottomright_x, bottomright_y,
-                                            fill = '#ccff00', outline = '#d3d3d3')
+                                            fill = '#696969', outline = '#d3d3d3')
     def handle_mouse_click(self,  click_point_x: float, click_point_y: float, canvas):
         canvas_width = canvas.winfo_width()
         canvas_height = canvas.winfo_height()
@@ -78,8 +78,8 @@ class Grid:
         
         for row in range(len(self._cells)):
             for col in range(len(self._cells[row])):
-                topleft_x, topleft_y = (cell_width*row) * canvas_width, (cell_height*col) * canvas_height
-                bottomright_x, bottomright_y = (cell_width*(row+1)) * canvas_width, (cell_height*(col + 1)) * canvas_height
+                topleft_x, topleft_y = (cell_width * row), (cell_height * col)
+                bottomright_x, bottomright_y = (cell_width * (row+1)), (cell_height * (col+1)) 
                 if topleft_x < click_point_x < bottomright_x and topleft_y < click_point_y < bottomright_y:
                     self._cells[row][col].flip_state()
         
@@ -91,7 +91,7 @@ def get_neighbors(grid: [[Cell]], location: (int, int)) -> [Cell]:
     x, y = location
     for x_coor in range(x - 1, x + 2):
         for  y_coor in range(y - 1, y + 2):
-            if (x_coor, y_coor) != location and cell_in_bounds(x_coor, y_coor, len(grid), len(grid[x_coor])):
+            if (x_coor, y_coor) != location and cell_in_bounds(x_coor, y_coor, len(grid), len(grid[0])):
                 neighbors.append(grid[x_coor][y_coor])
     return neighbors
 
@@ -110,6 +110,7 @@ def update_cell_states(new_states: [[bool]], grid: [[Cell]]) -> [[Cell]]:
     for row in range(len(grid)):
         for col in range(len(grid[row])):
             grid[row][col].set_new_state(new_states[row][col])
+    return grid
         
 def create_grid(width: int, height: int) -> [[Cell]]:
     grid = []
