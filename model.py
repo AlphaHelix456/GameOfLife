@@ -16,6 +16,7 @@ grid = logic.Grid(GRID_HEIGHT, GRID_WIDTH)
 
 def mouse_click(event: Event):
     click_point_x, click_point_y = event.x, event.y
+    grid.handle_mouse_click(click_point_x, click_point_y)
     
 
 def update_grid():

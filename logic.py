@@ -25,6 +25,9 @@ class Cell:
     
     def set_new_state(self, state: bool):
         self._populated = state
+    
+    def flip_state(self):
+        self._populated = (False if self._populated else True)
 
         
 class Grid:
@@ -56,9 +59,9 @@ class Grid:
         cell_height = canvas_height / self._height
         
         for row in range(len(self._cells)):
-            for col in range(self._cells[row]):
-                topleft_x, topleft_y = (cell_width * row), (cell_height * (col))
-                bottomright_x, bottomright_y = (cell_width * (row + 1)), (cell_height * (col + 1))
+            for col in range(len(self._cells[row])):
+                topleft_x, topleft_y = (cell_width*row) * canvas_width, (cell_height*col) * canvas_height
+                bottomright_x, bottomright_y = (cell_width*(row+1)) * canvas_width, (cell_height*(col + 1)) * canvas_height
                 
                 if self._cells[row][col].is_populated():
                     canvas.create_rectangle(topleft_x, topleft_y, bottomright_x, bottomright_y,
@@ -66,6 +69,22 @@ class Grid:
                 else:
                     canvas.create_rectangle(topleft_x, topleft_y, bottomright_x, bottomright_y,
                                             fill = '#ccff00', outline = '#d3d3d3')
+    def handle_mouse_click(self,  click_point_x: float, click_point_y: float, canvas):
+        canvas_width = canvas.winfo_width()
+        canvas_height = canvas.winfo_height()
+        
+        cell_width = canvas_width / self._width
+        cell_height = canvas_height / self._height
+        
+        for row in range(len(self._cells)):
+            for col in range(len(self._cells[row])):
+                topleft_x, topleft_y = (cell_width*row) * canvas_width, (cell_height*col) * canvas_height
+                bottomright_x, bottomright_y = (cell_width*(row+1)) * canvas_width, (cell_height*(col + 1)) * canvas_height
+                if topleft_x < click_point_x < bottomright_x and topleft_y < click_point_y < bottomright_y:
+                    self._cells[row][col].flip_state()
+        
+        
+        
         
 def get_neighbors(grid: [[Cell]], location: (int, int)) -> [Cell]:
     neighbors = []
