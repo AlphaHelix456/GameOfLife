@@ -25,6 +25,7 @@ class Cell:
     
     def set_new_state(self, state: bool):
         self._populated = state
+
         
 class Grid:
     def __init__(self, width: int, height: int):
@@ -46,6 +47,25 @@ class Grid:
                 state_sublist.append(advance_state(cell, cell_neighbors))
             new_states.append(state_sublist)
         self._cells = update_cell_states(self._cells, new_states) 
+    
+    def display(self, canvas):
+        canvas_width = canvas.winfo_width()
+        canvas_height = canvas.winfo_height()
+        
+        cell_width = canvas_width / self._width
+        cell_height = canvas_height / self._height
+        
+        for row in range(len(self._cells)):
+            for col in range(self._cells[row]):
+                topleft_x, topleft_y = (cell_width * row), (cell_height * (col))
+                bottomright_x, bottomright_y = (cell_width * (row + 1)), (cell_height * (col + 1))
+                
+                if self._cells[row][col].is_populated():
+                    canvas.create_rectangle(topleft_x, topleft_y, bottomright_x, bottomright_y,
+                                            fill = '#696969', outline = '#d3d3d3')
+                else:
+                    canvas.create_rectangle(topleft_x, topleft_y, bottomright_x, bottomright_y,
+                                            fill = '#ccff00', outline = '#d3d3d3')
         
 def get_neighbors(grid: [[Cell]], location: (int, int)) -> [Cell]:
     neighbors = []
